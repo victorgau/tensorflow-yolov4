@@ -342,7 +342,6 @@ class BaseClass:
 
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         image = self.draw_bboxes(frame, bboxes)
-        cv2.imshow("result", image)
 
         print("YOLOv4: Analysis is finished")
 
