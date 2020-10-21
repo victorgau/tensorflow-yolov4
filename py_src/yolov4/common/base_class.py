@@ -313,3 +313,37 @@ class BaseClass:
         while cv2.waitKey(10) & 0xFF != ord("q"):
             pass
         cv2.destroyWindow("result")
+
+    def analyze(
+        self,
+        media_path,
+        is_image: bool = True,
+        cv_apiPreference=None,
+        cv_frame_size: tuple = None,
+        cv_fourcc: str = None,
+        cv_waitKey_delay: int = 1,
+        iou_threshold: float = 0.3,
+        score_threshold: float = 0.25,
+    ):
+        if not path.exists(media_path):
+            raise FileNotFoundError("{} does not exist".format(media_path))
+
+        frame = cv2.imread(media_path)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        start_time = time.time()
+        bboxes = self.predict(
+            frame,
+            iou_threshold=iou_threshold,
+            score_threshold=score_threshold,
+        )
+        exec_time = time.time() - start_time
+        print("time: {:.2f} ms".format(exec_time * 1000))
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        image = self.draw_bboxes(frame, bboxes)
+        cv2.imshow("result", image)
+
+        print("YOLOv4: Analysis is finished")
+
+        return (image, bboxes)
