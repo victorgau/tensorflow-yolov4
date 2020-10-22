@@ -223,7 +223,6 @@ class BaseClass:
     def inference(
         self,
         media_path,
-        is_image: bool = True,
         cv_apiPreference=None,
         cv_frame_size: tuple = None,
         cv_fourcc: str = None,
